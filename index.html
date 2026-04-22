@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>你跟里歐娜有多契合？</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Serif+Display:ital@0;1&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rose:    #C4566A;
+    --rose-lt: #F2B8C6;
+    --rose-bg: #FDF0F3;
+    --rose-dk: #8B2D42;
+    --cream:   #FAF6F1;
+    --ink:     #2A1A1F;
+    --ink-lt:  #6B4E56;
+    --gold:    #C49A5A;
+    --gold-lt: #F5E6CC;
+    --white:   #FFFFFF;
+    --shadow:  0 8px 40px rgba(196,86,106,0.12);
+    --shadow-sm: 0 2px 12px rgba(196,86,106,0.08);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── BG decoration ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 80% 10%, rgba(196,86,106,0.07) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 10% 80%, rgba(196,154,90,0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 60% at 50% 50%, rgba(250,246,241,1) 0%, transparent 100%);
+    pointer-events: none;
+  }
+
+  /* ── COVER ── */
+  #cover {
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 60px 24px;
+    text-align: center;
+  }
+
+  .cover-deco {
+    font-size: 52px; margin-bottom: 24px;
+    animation: floatDeco 4s ease-in-out infinite;
+  }
+  @keyframes floatDeco {
+    0%,100% { transform: translateY(0); }
+    50%      { transform: translateY(-10px); }
+  }
+
+  .cover-eyebrow {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-weight: 300;
+    font-size: 13px;
+    letter-spacing: 0.25em;
+    color: var(--rose);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .cover-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(36px, 8vw, 68px);
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+
+  .cover-title-zh {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(22px, 5vw, 40px);
+    font-weight: 600;
+    color: var(--rose-dk);
+    margin-bottom: 32px;
+    letter-spacing: 0.05em;
+  }
+
+  .cover-desc {
+    max-width: 480px;
+    font-size: 15px;
+    line-height: 1.9;
+    color: var(--ink-lt);
+    margin-bottom: 48px;
+  }
+
+  .cover-stats {
+    display: flex; gap: 32px;
+    margin-bottom: 52px;
+    flex-wrap: wrap; justify-content: center;
+  }
+  .stat {
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: var(--rose);
+  }
+  .stat-label {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--ink-lt);
+    text-transform: uppercase;
+  }
+
+  .btn-start {
+    background: var(--rose);
+    color: white;
+    border: none;
+    padding: 18px 52px;
+    border-radius: 60px;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    box-shadow: 0 12px 32px rgba(196,86,106,0.35);
+    transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    position: relative; overflow: hidden;
+  }
+  .btn-start::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+  }
+  .btn-start:hover {
+    transform: translateY(-3px) scale(1.04);
+    box-shadow: 0 18px 44px rgba(196,86,106,0.45);
+  }
+  .btn-start:active { transform: translateY(0) scale(0.98); }
+
+  .cover-note {
+    margin-top: 20px;
+    font-size: 12px;
+    color: var(--ink-lt);
+    opacity: 0.7;
+  }
+
+  /* ── QUIZ WRAPPER ── */
+  #quiz {
+    display: none;
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    padding: 0 0 80px;
+  }
+
+  /* progress bar */
+  .progress-wrap {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(250,246,241,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(196,86,106,0.1);
+    padding: 14px 24px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .progress-label {
+    font-size: 12px;
+    color: var(--rose);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+  .progress-bar-bg {
+    flex: 1; height: 4px;
+    background: rgba(196,86,106,0.15);
+    border-radius: 99px; overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--rose-lt), var(--rose));
+    border-radius: 99px;
+    transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+    width: 0%;
+  }
+  .progress-pct {
+    font-size: 12px;
+    color: var(--ink-lt);
+    min-width: 36px;
+    text-align: right;
+  }
+
+  /* question card */
+  .q-container {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 48px 24px 0;
+  }
+
+  .q-card {
+    background: white;
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(196,86,106,0.08);
+    animation: slideUp 0.4s cubic-bezier(0.34,1.2,0.64,1) both;
+  }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .q-dim-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--rose-bg);
+    color: var(--rose);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    padding: 5px 12px;
+    border-radius: 99px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(196,86,106,0.15);
+  }
+
+  .q-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 13px;
+    color: var(--rose-lt);
+    margin-bottom: 8px;
+  }
+
+  .q-text {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.6;
+    color: var(--ink);
+    margin-bottom: 28px;
+  }
+
+  /* single choice */
+  .options-single { display: flex; flex-direction: column; gap: 10px; }
+
+  .opt {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 18px;
+    border: 1.5px solid rgba(196,86,106,0.15);
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.22s ease;
+    background: white;
+    user-select: none;
+  }
+  .opt:hover {
+    border-color: var(--rose-lt);
+    background: var(--rose-bg);
+    transform: translateX(4px);
+  }
+  .opt.selected {
+    border-color: var(--rose);
+    background: linear-gradient(135deg, var(--rose-bg), white);
+    box-shadow: 0 4px 16px rgba(196,86,106,0.15);
+  }
+  .opt-circle {
+    width: 20px; height: 20px; flex-shrink: 0;
+    border: 2px solid rgba(196,86,106,0.3);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.22s ease;
+  }
+  .opt.selected .opt-circle {
+    background: var(--rose);
+    border-color: var(--rose);
+  }
+  .opt.selected .opt-circle::after {
+    content: '';
+    width: 6px; height: 6px;
+    background: white;
+    border-radius: 50%;
+    display: block;
+  }
+  .opt-text {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink);
+    flex: 1;
+  }
+
+  /* multi choice (appearance sub-questions) */
+  .appearance-grid {
+    display: flex; flex-direction: column; gap: 18px;
+  }
+  .app-group { }
+  .app-group-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink-lt);
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  .app-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    padding: 8px 16px;
+    border: 1.5px solid rgba(196,86,106,0.2);
+    border-radius: 99px;
+    font-size: 13px;
+    color: var(--ink-lt);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: white;
+    user-select: none;
+  }
+  .chip:hover {
+    border-color: var(--rose-lt);
+    color: var(--rose);
+    background: var(--rose-bg);
+  }
+  .chip.selected {
+    background: var(--rose);
+    border-color: var(--rose);
+    color: white;
+    box-shadow: 0 4px 12px rgba(196,86,106,0.25);
+  }
+  /* eye shape: mutually exclusive */
+  .chip.eye-shape.selected { background: var(--rose-dk); border-color: var(--rose-dk); }
+
+  /* nav buttons */
+  .q-nav {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 32px;
+    gap: 12px;
+  }
+  .btn-prev {
+    background: none;
+    border: 1.5px solid rgba(196,86,106,0.25);
+    color: var(--ink-lt);
+    padding: 12px 24px;
+    border-radius: 99px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Noto Sans TC', sans-serif;
+  }
+  .btn-prev:hover { border-color: var(--rose); color: var(--rose); }
+  .btn-prev:disabled { opacity: 0.3; cursor: default; }
+
+  .btn-next {
+    background: var(--rose);
+    color: white;
+    border: none;
+    padding: 14px 36px;
+    border-radius: 99px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+    font-family: 'Noto Sans TC', sans-serif;
+    box-shadow: 0 6px 20px rgba(196,86,106,0.3);
+    letter-spacing: 0.05em;
+  }
+  .btn-next:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(196,86,106,0.4); }
+  .btn-next:disabled { opacity: 0.35; cursor: default; transform: none; box-shadow: none; }
+
+  .q-hint {
+    font-size: 12px;
+    color: var(--ink-lt);
+    opacity: 0.7;
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  /* ── RESULT ── */
+  #result {
+    display: none;
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    padding: 60px 24px 80px;
+    text-align: center;
+  }
+
+  .result-wrap {
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  .result-confetti { font-size: 48px; margin-bottom: 24px; }
+
+  .result-score-ring {
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: conic-gradient(var(--rose) var(--pct, 0%), rgba(196,86,106,0.1) 0%);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 28px;
+    position: relative;
+    box-shadow: 0 0 0 8px white, 0 0 0 10px rgba(196,86,106,0.1);
+    animation: spinIn 1s cubic-bezier(0.34,1.2,0.64,1) both;
+  }
+  @keyframes spinIn {
+    from { transform: scale(0.5) rotate(-90deg); opacity: 0; }
+    to   { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+  .result-score-inner {
+    width: 130px; height: 130px;
+    background: white;
+    border-radius: 50%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+  }
+  .result-score-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 40px;
+    color: var(--rose);
+    line-height: 1;
+  }
+  .result-score-label {
+    font-size: 11px;
+    color: var(--ink-lt);
+    letter-spacing: 0.1em;
+  }
+
+  .result-tier {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: var(--ink);
+    margin-bottom: 16px;
+    animation: fadeUp 0.6s 0.4s both;
+  }
+  .result-desc {
+    font-size: 15px;
+    line-height: 1.9;
+    color: var(--ink-lt);
+    margin-bottom: 40px;
+    animation: fadeUp 0.6s 0.6s both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* breakdown */
+  .breakdown {
+    background: white;
+    border-radius: 20px;
+    padding: 28px;
+    margin-bottom: 32px;
+    box-shadow: var(--shadow-sm);
+    text-align: left;
+    animation: fadeUp 0.6s 0.8s both;
+  }
+  .breakdown-title {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    color: var(--rose);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .breakdown-row {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 14px;
+  }
+  .breakdown-row:last-child { margin-bottom: 0; }
+  .bd-label {
+    font-size: 13px;
+    color: var(--ink);
+    width: 130px; flex-shrink: 0;
+  }
+  .bd-bar-bg {
+    flex: 1; height: 6px;
+    background: rgba(196,86,106,0.1);
+    border-radius: 99px; overflow: hidden;
+  }
+  .bd-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--rose-lt), var(--rose));
+    border-radius: 99px;
+    transition: width 1s 1s cubic-bezier(0.4,0,0.2,1);
+    width: 0%;
+  }
+  .bd-pct {
+    font-size: 12px;
+    color: var(--ink-lt);
+    min-width: 36px;
+    text-align: right;
+  }
+
+  .btn-retry {
+    background: none;
+    border: 1.5px solid var(--rose);
+    color: var(--rose);
+    padding: 14px 36px;
+    border-radius: 99px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Noto Sans TC', sans-serif;
+    letter-spacing: 0.05em;
+  }
+  .btn-retry:hover { background: var(--rose); color: white; }
+
+  /* ── utilities ── */
+  .hidden { display: none !important; }
+
+  @media (max-width: 480px) {
+    .q-card { padding: 28px 20px; }
+    .cover-stats { gap: 20px; }
+    .bd-label { width: 100px; font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ COVER ══ -->
+<section id="cover">
+  <div class="cover-deco">🩷</div>
+  <p class="cover-eyebrow">互動小測驗</p>
+  <h1 class="cover-title">Are You Her Type?</h1>
+  <h2 class="cover-title-zh">你跟里歐娜有多契合？</h2>
+  <p class="cover-desc">
+    回答以下問題，系統會根據里歐娜的真實偏好<br>
+    幫你計算出你們的契合程度。<br>
+    誠實作答效果最好 🤭
+  </p>
+  <div class="cover-stats">
+    <div class="stat">
+      <div class="stat-num">37</div>
+      <div class="stat-label">道題目</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">8</div>
+      <div class="stat-label">個面向</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">5</div>
+      <div class="stat-label">個結果等級</div>
+    </div>
+  </div>
+  <button class="btn-start" onclick="startQuiz()">開始測驗 →</button>
+  <p class="cover-note">測驗約需 5–8 分鐘，請確保有足夠時間完成</p>
+</section>
+
+<!-- ══ QUIZ ══ -->
+<section id="quiz">
+  <div class="progress-wrap">
+    <span class="progress-label">進度</span>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progressFill"></div>
+    </div>
+    <span class="progress-pct" id="progressPct">0%</span>
+  </div>
+
+  <div class="q-container">
+    <div class="q-card" id="qCard">
+      <!-- injected by JS -->
+    </div>
+    <p class="q-hint" id="qHint"></p>
+    <div class="q-nav">
+      <button class="btn-prev" id="btnPrev" onclick="prevQ()">← 上一題</button>
+      <button class="btn-next" id="btnNext" onclick="nextQ()">下一題 →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══ RESULT ══ -->
+<section id="result">
+  <div class="result-wrap">
+    <div class="result-confetti" id="resultEmoji">🌟</div>
+    <div class="result-score-ring" id="scoreRing">
+      <div class="result-score-inner">
+        <div class="result-score-num" id="scoreNum">0</div>
+        <div class="result-score-label">分 / 100</div>
+      </div>
+    </div>
+    <div class="result-tier" id="resultTier"></div>
+    <p class="result-desc" id="resultDesc"></p>
+    <div class="breakdown" id="breakdown"></div>
+    <button class="btn-retry" onclick="retryQuiz()">再測一次</button>
+  </div>
+</section>
+
+<script>
+// ══════════════════════════════════════════════════════
+// QUIZ DATA
+// ══════════════════════════════════════════════════════
+const DIMS = [
+  { id:1, name:"👀 外貌",        weight:0.13 },
+  { id:2, name:"😄 個性幽默",    weight:0.13 },
+  { id:3, name:"💼 經濟上進",    weight:0.14 },
+  { id:4, name:"🏠 家庭未來",    weight:0.12 },
+  { id:5, name:"💬 相處溝通",    weight:0.21 },
+  { id:6, name:"💕 親密安全感",  weight:0.15 },
+  { id:7, name:"🏃 生活習慣",    weight:0.08 },
+  { id:8, name:"🐱 對貓態度",    weight:0.04 },
+];
+
+// scores: [A,B,C,D], penalty: extra deduction if D (or C) selected
+// type: 'single' | 'appearance'
+// max: raw max for this dim (for normalisation)
+const QUESTIONS = [
+  // ── 外貌 ──
+  { id:'Q01', dim:1, type:'single',
+    text:'你的身高大概是？',
+    opts:['185cm 以上','181–184cm','176–180cm','175cm 以下'],
+    scores:[10,9,6,0], penalty:{3:-5} },
+  { id:'Q02', dim:1, type:'single',
+    text:'你的體型大致是？',
+    opts:['精壯/運動型，有在維持','標準/偏瘦，看起來有精神','普通，沒特別維持但還OK','偏胖，不太在意體態'],
+    scores:[8,8,4,1] },
+  { id:'Q03', dim:1, type:'appearance',
+    text:'來描述一下你的長相吧！',
+    subNote:'（符合的選起來，沒有的跳過就好）',
+    // flat chips — eyeShape group is mutually exclusive, rest are toggles
+    chips:[
+      { label:'單眼皮',  group:'eyeShape', exclusive:true,  score:0 },
+      { label:'內雙',    group:'eyeShape', exclusive:true,  score:1 },
+      { label:'雙眼皮',  group:'eyeShape', exclusive:true,  score:2 },
+      { label:'眼睛大',  group:'eyeSize',  exclusive:true, score:2 },
+      { label:'眼睛小',  group:'eyeSize',  exclusive:true, score:0 },
+      { label:'鼻子挺',  group:'nose',     exclusive:false, score:2 },
+      { label:'牙齒整齊',group:'teeth',    exclusive:false, score:1 },
+      { label:'有酒窩',  group:'dimple',   exclusive:false, score:2 },
+      { label:'皮膚好',  group:'skin',     exclusive:false, score:1 },
+    ]},
+  { id:'Q04', dim:1, type:'single',
+    text:'你平常對個人清潔和氣味的重視程度？',
+    opts:['很重視，會注意自己的氣味、定期維持清潔','有基本清潔習慣，會在意自己聞起來的狀態','洗澡就好，沒特別在意','完全不在意這些'],
+    scores:[8,9,3,0], penalty:{3:-3} },
+  { id:'Q05', dim:1, type:'single',
+    text:'你平常的穿搭和打理習慣？',
+    opts:['有自己的風格，穿搭用心、注重細節','乾淨整齊，偶爾用心','隨便穿，不太在意','能穿就好，從不考慮搭不搭'],
+    scores:[8,7,3,0] },
+
+  // ── 個性幽默 ──
+  { id:'Q06', dim:2, type:'single',
+    text:'你的社交習慣比較像？',
+    opts:['很外向，跟誰都能聊，場子裡永遠是焦點','社交可以但也需要獨處充電，看對象','偏內向，但對在乎的人很投入','很內向，不太喜歡社交場合'],
+    scores:[5,9,7,3] },
+  { id:'Q07', dim:2, type:'single',
+    text:'你跟熟悉的人相處時，說話習慣比較像？',
+    opts:['話很多、喜歡主導話題、講不停','有話就說，也很能聽對方講話','說話不多，但會在對的時機說','大部分時間都很安靜、不太說話'],
+    scores:[2,10,7,4] },
+  { id:'Q08', dim:2, type:'single',
+    text:'你跟另一半的相處感覺希望是哪種？',
+    opts:['像家人，溫暖又自在，有自己的默契','好玩有趣，一起做很多事','像朋友，很輕鬆沒負擔','很浪漫，充滿儀式感和甜蜜'],
+    scores:[10,8,4,6] },
+  { id:'Q09', dim:2, type:'single',
+    text:'你跟另一半的幽默感通常是哪種形式？',
+    opts:['我們有自己的梗和默契，自然就好笑','我喜歡說冷笑話或梗，讓對方笑','鬥嘴互嗆，嘴砲是日常','我不太主動搞笑，但跟得上對方'],
+    scores:[10,5,4,7] },
+  { id:'Q10', dim:2, type:'single',
+    text:'另一半心情不好、需要你的時候，你第一個反應？',
+    opts:['先好好聽她說、陪伴她，讓她感到被接住','先接住她的情緒，再提供建議或一起想辦法','給她空間，等她冷靜好了再聊','直接幫她分析問題、給解決方法'],
+    scores:[9,10,5,4] },
+
+  // ── 經濟上進 ──
+  { id:'Q11', dim:3, type:'single',
+    text:'你的最高學歷？',
+    opts:['碩士或以上','大學畢業','大學在讀/肄業','高中職或以下'],
+    scores:[8,6,4,2] },
+  { id:'Q12', dim:3, type:'single',
+    text:'你的主要專業或學科背景？',
+    opts:['理工/資訊/工程/醫學類','商業/財務/法律/管理類','人文/藝術/社會科學類','沒有特別的專業背景'],
+    scores:[8,7,5,3] },
+  { id:'Q13', dim:3, type:'single',
+    text:'你目前的年收入大概是？',
+    opts:['200萬以上','100–200萬','80–100萬','80萬以下或無穩定收入'],
+    scores:[10,8,5,0], penalty:{3:-8} },
+  { id:'Q14', dim:3, type:'single',
+    text:'你對未來 5 年的職涯 / 事業，有多清楚的方向？',
+    opts:['很清楚，正在執行中','有大方向，還在摸索細節','模糊，走一步算一步','沒有，沒想過這個'],
+    scores:[9,7,3,0], penalty:{3:-5} },
+  { id:'Q15', dim:3, type:'single',
+    text:'約會、送禮、安排旅行這些花費，你的態度？',
+    opts:['很樂意，我喜歡為喜歡的人花心思','願意，但希望偶爾互相就好','一切AA，這樣最公平','我不太想在這些上面花太多錢'],
+    scores:[9,7,2,0], penalty:{3:-5} },
+
+  // ── 家庭未來 ──
+  { id:'Q16', dim:4, type:'single',
+    text:'你對「結婚」這件事的態度？',
+    opts:['想要，而且希望在適合的年紀認真規劃','想要，但不急，順其自然就好','還不確定，要看對的人出現再說','目前不想結婚'],
+    scores:[10,7,3,0], penalty:{3:-20} },
+  { id:'Q17', dim:4, type:'single',
+    text:'你對「生小孩」這件事的態度？',
+    opts:['想要，這是我的人生規劃之一','想要，但時機和狀況要對','不確定，目前沒想那麼遠','不想生，或完全排除這個選項'],
+    scores:[10,7,3,0], penalty:{3:-20} },
+  { id:'Q18', dim:4, type:'single',
+    text:'你和你的原生家庭關係是？',
+    opts:['健康融洽，孝順但有自己的界線','還不錯，偶有摩擦但基本OK','關係普通，不太親近','家庭狀況比較複雜或有明顯問題'],
+    scores:[7,6,3,1] },
+  { id:'Q19', dim:4, type:'single',
+    text:'你家人通常對你的感情和另一半，態度是？',
+    opts:['幾乎不干涉，尊重我的選擇','偶爾關心，但不強迫改變','會有意見，我會盡量溝通平衡','干涉很多，我有時也會被影響'],
+    scores:[8,7,4,0], penalty:{3:-8} },
+  { id:'Q20', dim:4, type:'single',
+    text:'你有交通工具嗎？',
+    opts:['有車，也有機車','有車，沒有機車','只有機車','都沒有'],
+    scores:[10,9,5,1] },
+
+  // ── 相處溝通 ──
+  { id:'Q21', dim:5, type:'single',
+    text:'你在感情裡的日常聯絡習慣比較像？',
+    opts:['很主動，喜歡分享生活大小事','會聯絡，但不一定每天密集','有事才傳，保持各自節奏','不太愛傳訊息，覺得沒必要常聯絡'],
+    scores:[10,7,3,0], penalty:{3:-5} },
+  { id:'Q22', dim:5, type:'single',
+    text:'你在感情裡安排約會 / 驚喜的主動程度？',
+    opts:['很主動，喜歡規劃和安排','會主動，但也希望偶爾對方來','偏被動，等對方提議','幾乎靠對方主導'],
+    scores:[9,8,4,1] },
+  { id:'Q23', dim:5, type:'single',
+    text:'有摩擦或吵架的時候，你通常怎麼處理？',
+    opts:['需要一點時間冷靜，然後主動找對方把話說開','想立刻解決，不想讓情緒拖太久','容易陷入冷戰，等對方主動','盡量不談，讓時間把它沖淡'],
+    scores:[9,8,0,0], penalty:{2:-8,3:-8} },
+  { id:'Q24', dim:5, type:'single',
+    text:'你說話的風格通常比較像？',
+    opts:['說話有溫度，很在意對方聽到的感受','直接但會顧慮場合和對方狀態','比較直接，說什麼就是什麼','我覺得直白比顧慮感受更重要'],
+    scores:[8,9,4,0], penalty:{3:-8} },
+  { id:'Q25', dim:5, type:'single',
+    text:'你對另一半喜歡的事（她追的劇、愛的東西），你會？',
+    opts:['主動了解，有時主動陪她一起','她提起來我就聽，偶爾一起','知道就好，不太感興趣','覺得沒必要，各玩各的就好'],
+    scores:[9,7,4,1] },
+  { id:'Q26', dim:5, type:'single',
+    text:'你對「儀式感（生日、紀念日、節日驚喜）」的看法？',
+    opts:['很重要，我會認真記得、用心準備','喜歡，但不一定要很盛大，有心意就好','不太在意，有沒有都無所謂','我覺得這些形式沒有太大意義'],
+    scores:[8,10,3,0], penalty:{3:-5} },
+  { id:'Q27', dim:5, type:'single',
+    text:'你希望和另一半能融入彼此的生活圈（朋友、家人）嗎？',
+    opts:['非常希望，這是理想的狀態','希望，但可以慢慢來','還好，感情歸感情，圈子各自就好','不太喜歡，傾向把感情和其他圈子分開'],
+    scores:[10,8,3,1] },
+
+  // ── 親密安全感 ──
+  { id:'Q28', dim:6, type:'single',
+    text:'交往後，你對忠誠 / 不搞曖昧的態度？',
+    opts:['這是底線，完全不會跨越','會和對方說清楚界線在哪','只要不逾越，保持異性朋友沒問題','我比較開放，不太喜歡被限制'],
+    scores:[10,8,5,0], penalty:{3:-15} },
+  { id:'Q29', dim:6, type:'single',
+    text:'另一半說想看你的手機 / 社群，你的反應？',
+    opts:['完全沒問題，隨時可以看','可以，但希望事先說一聲','有點不舒服，但可以接受','我不喜歡，這是我的私人空間'],
+    scores:[8,10,5,1] },
+  { id:'Q30', dim:6, type:'single',
+    text:'你在感情裡給對方安全感的方式通常是？',
+    opts:['主動表達喜歡、讓她知道我在哪、說清楚','行動到位，雖然不太說出口但會做','靠默契，不太主動但很穩定','我不太習慣照顧對方的情緒需求'],
+    scores:[9,8,5,0], penalty:{3:-8} },
+  { id:'Q31', dim:6, type:'single',
+    text:'對於另一半有自己的朋友和個人時間，你怎麼看？',
+    opts:['很好，我自己也需要獨處，互相尊重','OK，但我還是希望是她的優先','有點在意，希望了解她所有的生活','不太喜歡，希望大部分時間都在一起'],
+    scores:[9,8,4,2] },
+
+  // ── 生活習慣 ──
+  { id:'Q32', dim:7, type:'single',
+    text:'你的運動習慣是？',
+    opts:['固定在運動，是生活的一部分，也很願意帶另一半一起','偶爾運動，如果對方約我很樂意','很少運動，但對方約我還是會去','完全不運動，也不想改變'],
+    scores:[9,8,5,1] },
+  { id:'Q33', dim:7, type:'single',
+    text:'你有一件讓你非常投入、做起來會發光的事嗎？',
+    opts:['有！做那件事的時候我整個人不一樣','有幾個喜歡的，雖然沒到非常投入','說不太上來，沒特別的','沒有，生活蠻平的'],
+    scores:[9,6,3,0], penalty:{3:-3} },
+  { id:'Q34', dim:7, type:'single',
+    text:'你對「一起出去探店、吃好吃的、偶爾旅遊」的興趣？',
+    opts:['很喜歡！我自己就常在找好料','偶爾很好，不用每次都這樣','不太主動，但對方約我會去','不太感興趣，吃飽就好'],
+    scores:[7,10,6,2] },
+
+  // ── 對貓 ──
+  { id:'Q35', dim:8, type:'single',
+    text:'你對貓咪的感覺是？',
+    opts:['超愛貓！貓貓是我的心頭肉','喜歡，可以好好相處','還好，不討厭但沒特別感覺','不喜歡貓，或對貓毛嚴重過敏'],
+    scores:[10,8,4,0], penalty:{3:-10} },
+  { id:'Q36', dim:8, type:'single',
+    text:'如果另一半的貓一開始不理你或不太喜歡你，你會？',
+    opts:['超認真想辦法讓牠喜歡我，把牠當情敵來對待','耐心等待，讓牠慢慢適應','沒關係，牠不理我我就不強迫','有點受傷或希望少接觸'],
+    scores:[9,8,5,1] },
+  { id:'Q37', dim:8, type:'single',
+    text:'另一半非常愛她的貓（有時候可能比你重要），你能接受嗎？',
+    opts:['完全可以，我還要一起寵牠','可以理解，貓是她的家人嘛','有點不習慣，但會努力接受','說實話有點介意'],
+    scores:[9,8,5,1] },
+];
+
+// raw max per dim (for normalisation)
+const DIM_RAW_MAX = {
+  1: 42,   // Q01+Q02+Q04+Q05 max + Q03 appearance up to 10 bonus
+  2: 43,
+  3: 44,
+  4: 43,
+  5: 63,
+  6: 38,
+  7: 28,
+  8: 27,
+};
+
+// ══════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════
+let current = 0;
+let answers = {}; // qid -> selected index (or appearance obj)
+let appearanceState = {}; // per appearance question
+
+// ══════════════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════════════
+function startQuiz() {
+  document.getElementById('cover').style.display = 'none';
+  document.getElementById('quiz').style.display = 'block';
+  current = 0;
+  answers = {};
+  appearanceState = {};
+  renderQ();
+}
+
+function retryQuiz() {
+  document.getElementById('result').style.display = 'none';
+  document.getElementById('cover').style.display = 'flex';
+}
+
+function prevQ() {
+  if (current > 0) { current--; renderQ(); }
+}
+
+function nextQ() {
+  const q = QUESTIONS[current];
+  if (!isAnswered(q)) return;
+
+  if (current < QUESTIONS.length - 1) {
+    current++;
+    renderQ();
+  } else {
+    showResult();
+  }
+}
+
+function isAnswered(q) {
+  if (q.type === 'appearance') return true; // optional sub-selections
+  return answers[q.id] !== undefined;
+}
+
+// ══════════════════════════════════════════════════════
+// RENDER
+// ══════════════════════════════════════════════════════
+function renderQ() {
+  const q = QUESTIONS[current];
+  const total = QUESTIONS.length;
+  const pct = Math.round((current / total) * 100);
+
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressPct').textContent = pct + '%';
+
+  const dim = DIMS.find(d => d.id === q.dim);
+  let html = `
+    <div class="q-dim-tag">${dim.name}</div>
+    <div class="q-num">第 ${current + 1} 題，共 ${total} 題</div>
+    <div class="q-text">${q.text}</div>
+  `;
+
+  if (q.type === 'appearance') {
+    if (!appearanceState[q.id]) appearanceState[q.id] = {};
+    html += renderAppearance(q);
+  } else {
+    html += renderSingle(q);
+  }
+
+  document.getElementById('qCard').innerHTML = html;
+  document.getElementById('qCard').style.animation = 'none';
+  void document.getElementById('qCard').offsetWidth;
+  document.getElementById('qCard').style.animation = '';
+
+  // hint
+  const hint = q.type === 'appearance'
+    ? '各特徵獨立選擇，沒有的跳過就好'
+    : '請選擇一個最符合你的選項';
+  document.getElementById('qHint').textContent = hint;
+
+  // buttons
+  document.getElementById('btnPrev').disabled = current === 0;
+  updateNextBtn(q);
+}
+
+function renderSingle(q) {
+  const sel = answers[q.id];
+  let html = '<div class="options-single">';
+  q.opts.forEach((opt, i) => {
+    const cls = sel === i ? 'opt selected' : 'opt';
+    html += `
+      <div class="${cls}" onclick="selectOpt('${q.id}', ${i})">
+        <div class="opt-circle"></div>
+        <div class="opt-text">${opt}</div>
+      </div>`;
+  });
+  html += '</div>';
+  return html;
+}
+
+function renderAppearance(q) {
+  const state = appearanceState[q.id] || {};
+  let html = `<p style="font-size:13px;color:var(--ink-lt);margin-bottom:20px;">${q.subNote}</p>`;
+  html += '<div class="app-chips" style="display:flex;flex-wrap:wrap;gap:10px;">';
+  q.chips.forEach(chip => {
+    const isSelected = chip.exclusive
+      ? state[chip.group] === chip.label
+      : (state[chip.group] && state[chip.group][chip.label]);
+    const cls = isSelected ? 'chip selected' : 'chip';
+    html += `<span class="${cls}" onclick="toggleChip('${q.id}','${chip.group}','${chip.label}',${chip.exclusive})">${chip.label}</span>`;
+  });
+  html += '</div>';
+  return html;
+}
+
+function selectOpt(qid, idx) {
+  answers[qid] = idx;
+  renderQ();
+}
+
+function toggleChip(qid, groupKey, chipLabel, exclusive) {
+  if (!appearanceState[qid]) appearanceState[qid] = {};
+  const s = appearanceState[qid];
+  if (exclusive) {
+    s[groupKey] = s[groupKey] === chipLabel ? null : chipLabel;
+  } else {
+    if (!s[groupKey]) s[groupKey] = {};
+    s[groupKey][chipLabel] = !s[groupKey][chipLabel];
+  }
+  const q = QUESTIONS.find(q => q.id === qid);
+  const dim = DIMS.find(d => d.id === q.dim);
+  let html = `
+    <div class="q-dim-tag">${dim.name}</div>
+    <div class="q-num">第 ${current + 1} 題，共 ${QUESTIONS.length} 題</div>
+    <div class="q-text">${q.text}</div>
+  `;
+  html += renderAppearance(q);
+  document.getElementById('qCard').innerHTML = html;
+}
+
+function updateNextBtn(q) {
+  const btn = document.getElementById('btnNext');
+  const answered = isAnswered(q);
+  btn.disabled = !answered;
+  btn.textContent = current === QUESTIONS.length - 1 ? '看結果 🩷' : '下一題 →';
+}
+
+// ══════════════════════════════════════════════════════
+// SCORING
+// ══════════════════════════════════════════════════════
+function calcScore() {
+  let dimRaw = {}; // dim_id -> raw score
+  let dimMax = {}; // dim_id -> max possible for normalisation
+  let totalPenalty = 0;
+  let appearanceBonus = 0;
+
+  DIMS.forEach(d => { dimRaw[d.id] = 0; dimMax[d.id] = 0; });
+
+  QUESTIONS.forEach(q => {
+    if (q.type === 'appearance') {
+      // bonus points from flat chips
+      const state = appearanceState[q.id] || {};
+      q.chips.forEach(chip => {
+        const selected = chip.exclusive
+          ? state[chip.group] === chip.label
+          : (state[chip.group] && state[chip.group][chip.label]);
+        if (selected) appearanceBonus += chip.score;
+      });
+      return;
+    }
+
+    const idx = answers[q.id];
+    if (idx === undefined) return;
+
+    const raw = q.scores[idx];
+    const maxRaw = Math.max(...q.scores);
+    dimRaw[q.dim] += raw;
+    dimMax[q.dim] += maxRaw;
+
+    // penalties
+    if (q.penalty && q.penalty[idx] !== undefined) {
+      totalPenalty += q.penalty[idx];
+    }
+  });
+
+  // Weighted total (0–100 base)
+  let total = 0;
+  let breakdown = [];
+  DIMS.forEach(d => {
+    const max = DIM_RAW_MAX[d.id];
+    const raw = dimRaw[d.id];
+    const pct = max > 0 ? Math.min(raw / max, 1) : 0;
+    const weighted = pct * d.weight * 100;
+    total += weighted;
+    breakdown.push({ name: d.name, pct: Math.round(pct * 100) });
+  });
+
+  // Appearance bonus: max +10 raw → normalise to +5 points to total
+  const bonusPts = Math.min(appearanceBonus, 10) * 0.5;
+  total += bonusPts;
+
+  // Apply penalties (already as absolute numbers relative to base 100)
+  total += totalPenalty;
+
+  total = Math.max(0, Math.min(100, Math.round(total)));
+  return { total, breakdown };
+}
+
+// ══════════════════════════════════════════════════════
+// RESULT
+// ══════════════════════════════════════════════════════
+const TIERS = [
+  { min:90, emoji:'🌟', title:'命中注定的那個人',
+    desc:'哇……你幾乎就是里歐娜心目中的那個人。顏值、個性、三觀、相處方式，全部都對上了。你確定你不是她失散多年的命定之人嗎？請認真把握這份緣分！' },
+  { min:75, emoji:'💛', title:'超級有潛力的候選人',
+    desc:'你跟里歐娜的契合度真的很高！可能在某幾個地方有一點落差，但整體來說你就是她會想深入認識的那種人。主動一點吧！' },
+  { min:55, emoji:'💚', title:'有緣分，但需要磨合',
+    desc:'你們之間有一定的共鳴和吸引力，但在一些比較重要的事情上可能需要更多溝通和了解。有緣無份很可惜，值得認真嘗試看看！' },
+  { min:35, emoji:'🩶', title:'好朋友可以，戀人再想想',
+    desc:'說實話，你們有一些比較核心的差異。一起出去吃飯聊天應該沒問題，但認真交往的話……可能要想清楚一點哦。' },
+  { min:0,  emoji:'❌', title:'我們大概是路人緣',
+    desc:'里歐娜覺得你們可能真的很難走在一起耶……不過沒關係，世界這麼大，你一定有更適合你的人在某個地方等著！祝你早日找到！' },
+];
+
+function showResult() {
+  document.getElementById('quiz').style.display = 'none';
+  const res = document.getElementById('result');
+  res.style.display = 'block';
+
+  const { total, breakdown } = calcScore();
+  const tier = TIERS.find(t => total >= t.min);
+
+  // animate score ring
+  setTimeout(() => {
+    document.getElementById('scoreRing').style.setProperty('--pct', total * 3.6 + 'deg');
+  }, 100);
+
+  // count up
+  let n = 0;
+  const numEl = document.getElementById('scoreNum');
+  const interval = setInterval(() => {
+    n = Math.min(n + Math.ceil(total / 40), total);
+    numEl.textContent = n;
+    if (n >= total) clearInterval(interval);
+  }, 30);
+
+  document.getElementById('resultEmoji').textContent = tier.emoji;
+  document.getElementById('resultTier').textContent = tier.title;
+  document.getElementById('resultDesc').textContent = tier.desc;
+
+  // breakdown bars
+  let bdHtml = '<div class="breakdown-title">各面向得分</div>';
+  breakdown.forEach(b => {
+    bdHtml += `
+      <div class="breakdown-row">
+        <div class="bd-label">${b.name}</div>
+        <div class="bd-bar-bg"><div class="bd-bar-fill" style="width:${b.pct}%"></div></div>
+        <div class="bd-pct">${b.pct}%</div>
+      </div>`;
+  });
+  document.getElementById('breakdown').innerHTML = bdHtml;
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
