@@ -607,7 +607,7 @@ const QUESTIONS = [
   { id:'Q01', dim:1, type:'single',
     text:'你的身高大概是？',
     opts:['183cm 以上','179–182cm','175–178cm','174cm 以下'],
-    scores:[10,8,5,0], penalty:{3:-5} },
+    scores:[10,10,5,0], penalty:{3:-5} },
   { id:'Q02', dim:1, type:'single',
     text:'你的體型大致是？',
     opts:['精壯/運動型，有在維持','標準/偏瘦，看起來有精神','普通，沒特別維持但還OK','偏胖，不太在意體態'],
@@ -615,17 +615,38 @@ const QUESTIONS = [
   { id:'Q03', dim:1, type:'appearance',
     text:'來描述一下你的長相吧！',
     subNote:'（符合的選起來，沒有的跳過就好）',
-    // flat chips — eyeShape group is mutually exclusive, rest are toggles
     chips:[
-      { label:'單眼皮',  group:'eyeShape', exclusive:true,  score:0 },
-      { label:'內雙',    group:'eyeShape', exclusive:true,  score:1 },
-      { label:'雙眼皮',  group:'eyeShape', exclusive:true,  score:2 },
-      { label:'眼睛大',  group:'eyeSize',  exclusive:true, score:2 },
-      { label:'眼睛小',  group:'eyeSize',  exclusive:true, score:0 },
-      { label:'鼻子挺',  group:'nose',     exclusive:false, score:2 },
-      { label:'牙齒整齊',group:'teeth',    exclusive:false, score:1 },
-      { label:'有酒窩',  group:'dimple',   exclusive:false, score:2 },
-      { label:'皮膚好',  group:'skin',     exclusive:false, score:1 },
+      // 眼睛形狀 互斥
+      { label:'單眼皮',        group:'eyeShape', exclusive:true,  score:0 },
+      { label:'內雙',          group:'eyeShape', exclusive:true,  score:1 },
+      { label:'雙眼皮',        group:'eyeShape', exclusive:true,  score:2 },
+      // 眼睛大小 互斥
+      { label:'眼睛大',        group:'eyeSize',  exclusive:true,  score:2 },
+      { label:'眼睛小',        group:'eyeSize',  exclusive:true,  score:0 },
+      // 眉毛
+      { label:'濃眉',          group:'brow1',    exclusive:false, score:2 },
+      { label:'自然眉',        group:'brow2',    exclusive:false, score:2 },
+      // 頭髮
+      { label:'短髮帥氣',      group:'hair1',    exclusive:false, score:2 },
+      { label:'自然黑髮',      group:'hair2',    exclusive:false, score:2 },
+      { label:'有瀏海',        group:'hair3',    exclusive:false, score:1 },
+      // 鼻子/五官
+      { label:'鼻子挺',        group:'nose',     exclusive:false, score:2 },
+      { label:'深邃五官',      group:'deep',     exclusive:false, score:1 },
+      // 嘴唇
+      { label:'唇形好看',      group:'lips',     exclusive:false, score:1 },
+      // 笑容
+      { label:'笑起來很好看',  group:'smile',    exclusive:false, score:2 },
+      { label:'有酒窩',        group:'dimple',   exclusive:false, score:2 },
+      // 手
+      { label:'手好看／手指修長', group:'hands', exclusive:false, score:2 },
+      // 牙齒
+      { label:'牙齒整齊',      group:'teeth',    exclusive:false, score:1 },
+      // 臉型
+      { label:'尖下巴',        group:'jaw1',     exclusive:false, score:0 },
+      { label:'方臉／輪廓感強', group:'jaw2',    exclusive:false, score:1 },
+      // 皮膚
+      { label:'皮膚好',        group:'skin',     exclusive:false, score:1 },
     ]},
   { id:'Q04', dim:1, type:'single',
     text:'你平常對個人清潔和氣味的重視程度？',
@@ -633,8 +654,8 @@ const QUESTIONS = [
     scores:[8,9,3,0], penalty:{3:-3} },
   { id:'Q05', dim:1, type:'single',
     text:'你平常的穿搭風格比較偏向？',
-    opts:['日系／韓系清新乾淨，或 Old money／精緻質感風','西裝、Smart casual，正式休閒都OK','簡約基本款，低調有質感','潮流街頭／Oversized／運動機能風'],
-    scores:[10,9,7,2] },
+    opts:['日系／韓系清新乾淨風','西裝／Smart casual 正式休閒風，或 Old money 精緻質感風','簡約基本款，低調有質感','潮流街頭／Oversized／運動機能風'],
+    scores:[10,10,7,2] },
 
   // ── 個性幽默 ──
   { id:'Q06', dim:2, type:'single',
